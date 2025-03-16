@@ -2,6 +2,12 @@
 
 本文檔說明如何編譯與執行 `gpu_benchmark.cu` 程式。
 
+## 先確認是否支援Cuda
+
+```bash
+nvcc --version
+```
+
 ## 編譯程式
 
 使用以下指令來編譯程式：
