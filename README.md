@@ -8,9 +8,10 @@
 
 ```bash
 nvcc -o gpu_benchmark gpu_benchmark.cu -lm
+```
 
 ## 執行程式
 
 ```bash
-
 ./gpu_benchmark
+```
