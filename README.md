@@ -13,7 +13,7 @@ nvcc --version
 使用以下指令來編譯程式：
 
 ```bash
-nvcc -o gpu_benchmark gpu_benchmark.cu -lm
+nvcc -o gpu_benchmark gpu_benchmark.cu -rdc=true -lm
 ```
 
 ## 執行程式
