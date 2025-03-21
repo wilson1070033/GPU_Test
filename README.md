@@ -16,6 +16,8 @@ nvcc --version
 nvcc -o gpu_benchmark gpu_benchmark.cu -lm
 ```
 
+## 分數修正版本，以RTX4090為最高標準
+
 ```bash
 nvcc -o gpu_benchmark gpu_benchmark_fix_score.cu -rdc=true -lm
 ```
