@@ -1,0 +1,20 @@
+# Build files
+build/
+*.o
+*.out
+
+# Executables
+gpu_benchmark
+gpu_benchmark_legacy
+gpu_benchmark_fix_score
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db

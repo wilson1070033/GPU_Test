@@ -4,10 +4,19 @@
 
 namespace gpu_benchmark {
 
+// Optimized version using vector loads (float4 for better memory coalescing)
 __global__ void memoryBandwidthKernel(float* input, float* output, int n) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < n) {
-        output[idx] = input[idx];
+    int idx = (blockIdx.x * blockDim.x + threadIdx.x) * 4;
+
+    if (idx + 3 < n) {
+        // Vector load/store for better bandwidth
+        float4 data = *reinterpret_cast<float4*>(&input[idx]);
+        *reinterpret_cast<float4*>(&output[idx]) = data;
+    } else if (idx < n) {
+        // Handle remainder
+        for (int i = idx; i < n && i < idx + 4; ++i) {
+            output[i] = input[i];
+        }
     }
 }
 
@@ -30,7 +39,8 @@ float testMemoryBandwidth(int size) {
     GPU_CHECK(cudaMemcpy(d_input, h_input, bytes, cudaMemcpyHostToDevice));
 
     int threadsPerBlock = 256;
-    int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;
+    // Each thread processes 4 elements
+    int blocksPerGrid = ((numElements / 4) + threadsPerBlock - 1) / threadsPerBlock;
 
     memoryBandwidthKernel<<<blocksPerGrid, threadsPerBlock>>>(d_input, d_output, numElements);
     GPU_CHECK(cudaDeviceSynchronize());
